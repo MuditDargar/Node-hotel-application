@@ -83,5 +83,6 @@ router.post('/', async (req, res) => {
     }
   })
 
+  // export the menu items
   module.exports = router;
   
