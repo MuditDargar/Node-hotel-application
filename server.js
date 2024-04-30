@@ -8,9 +8,13 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const db = require('./db'); // Assuming db.js sets up Mongoose connection
+require('dotenv').config();
+
 
 const Menu=require('./models/Menu');
 app.use(bodyParser.json()); // req.body
+
+const PORT=process.env.PORT || 3000 ;
 
 app.get('/', function (req, res) {
   res.send('Welcome to my hotel. How can I help you?');
@@ -28,6 +32,7 @@ const menuRoutes=require('./routes/menuRoutes');
 
 // Use the routers in the app for menu
 app.use('/menu',menuRoutes);
+
 
 
 
