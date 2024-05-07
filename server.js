@@ -9,14 +9,30 @@ const app = express();
 const bodyParser = require('body-parser');
 const db = require('./db'); // Assuming db.js sets up Mongoose connection
 require('dotenv').config();
+const passport=require('./auth');
 
+const Person=require('./models/Person');
 
 const Menu=require('./models/Menu');
 app.use(bodyParser.json()); // req.body
 
 const PORT=process.env.PORT || 3000 ;
 
-app.get('/', function (req, res) {
+// Middleware function
+const logrequest=(req,res,next)=>{
+  console.log(`[${new Date().toLocaleString()}] Request received: ${req.originalUrl}`);
+  next(); // Continue to the next middleware orr Move on to the next middleware phase
+}
+
+
+app.use(logrequest)
+
+  
+
+app.use(passport.initialize());
+const localauthmiddleware=passport.authenticate('local',{session:false});
+
+app.get('/' , function (req, res) {
   res.send('Welcome to my hotel. How can I help you?');
 });
 
@@ -24,14 +40,14 @@ app.get('/', function (req, res) {
 const personRoutes=require('./routes/personRoutes');
 
 // Use the routers in the app for person
-app.use('/person',personRoutes);
+app.use('/person', localauthmiddleware,personRoutes);
 
 
 // Import the router files for menu
 const menuRoutes=require('./routes/menuRoutes');
 
 // Use the routers in the app for menu
-app.use('/menu',menuRoutes);
+app.use('/menu' ,menuRoutes);
 
 
 
