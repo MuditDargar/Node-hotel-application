@@ -40,14 +40,14 @@ app.get('/' , function (req, res) {
 const personRoutes=require('./routes/personRoutes');
 
 // Use the routers in the app for person
-app.use('/person', localauthmiddleware,personRoutes);
+app.use('/person',personRoutes);
 
 
 // Import the router files for menu
 const menuRoutes=require('./routes/menuRoutes');
 
 // Use the routers in the app for menu
-app.use('/menu' ,menuRoutes);
+app.use('/menu' ,localauthmiddleware,menuRoutes);
 
 
 
